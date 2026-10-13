@@ -87,6 +87,62 @@ def add_prompt():
     print("프롬프트가 추가되었습니다!")
 
 
+def print_prompt_line(number, prompt):
+    """프롬프트 한 줄을 '번호. [카테고리] 제목 ⭐' 형태로 출력한다."""
+    star = " ⭐" if prompt["favorite"] else ""
+    print(f"{number}. [{prompt['category']}] {prompt['title']}{star}")
+
+
+def show_list():
+    """저장된 모든 프롬프트를 번호와 함께 보여준다."""
+    print()
+    print("=== 프롬프트 목록 ===")
+    if not prompts:
+        print("등록된 프롬프트가 없습니다.")
+        return
+
+    for i, prompt in enumerate(prompts, start=1):
+        print_prompt_line(i, prompt)
+    print()
+    print(f"총 {len(prompts)}개의 프롬프트")
+
+
+def show_by_category():
+    """카테고리를 고르면 그 카테고리의 프롬프트만 보여준다."""
+    print()
+    print("=== 카테고리별 조회 ===")
+
+    # 기본 카테고리 + 직접 입력으로 새로 생긴 카테고리까지 모으기
+    categories = list(CATEGORIES)
+    for prompt in prompts:
+        if prompt["category"] not in categories:
+            categories.append(prompt["category"])
+
+    for i, category in enumerate(categories, start=1):
+        print(f"{i}) {category}")
+
+    choice = input("선택: ").strip()
+    if not choice.isdigit() or not (1 <= int(choice) <= len(categories)):
+        print("잘못된 번호입니다.")
+        return
+
+    selected = categories[int(choice) - 1]
+    print()
+    print(f"[{selected}] 카테고리 프롬프트:")
+
+    count = 0
+    for i, prompt in enumerate(prompts, start=1):
+        if prompt["category"] == selected:
+            print_prompt_line(i, prompt)
+            count += 1
+
+    if count == 0:
+        print("해당 카테고리에 프롬프트가 없습니다.")
+    else:
+        print()
+        print(f"총 {count}개의 프롬프트")
+
+
 def main():
     """메뉴를 계속 보여주고, 사용자가 고른 번호를 처리한다."""
     while True:
@@ -95,11 +151,18 @@ def main():
 
         if choice == "1":
             add_prompt()
+        elif choice == "2":
+            show_list()
+        elif choice == "3":
+            show_by_category()
         elif choice == "0":
             print("프로그램을 종료합니다.")
             break
         else:
             print("잘못된 번호입니다. 다시 선택해주세요.")
+
+        # 결과를 확인할 시간을 주고, Enter를 누르면 메뉴로 돌아간다
+        input("\nEnter를 누르면 메뉴로 돌아갑니다...")
 
 
 if __name__ == "__main__":
