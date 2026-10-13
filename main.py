@@ -70,6 +70,20 @@ def choose_category():
         print("올바른 번호를 입력해주세요.")
 
 
+def select_prompt():
+    """번호를 입력받아 해당 프롬프트를 돌려준다. 잘못된 번호면 None을 돌려준다."""
+    if not prompts:
+        print("등록된 프롬프트가 없습니다.")
+        return None
+
+    choice = input("번호 입력: ").strip()
+    if choice.isdigit() and 1 <= int(choice) <= len(prompts):
+        return prompts[int(choice) - 1]
+
+    print("잘못된 번호입니다.")
+    return None
+
+
 def add_prompt():
     """새 프롬프트를 입력받아 목록에 추가한다."""
     print()
@@ -164,6 +178,28 @@ def search_prompt():
         print(f"{count}개의 프롬프트를 찾았습니다.")
 
 
+def show_detail():
+    """번호를 입력받아 프롬프트의 전체 내용을 보여준다."""
+    print()
+    print("=== 프롬프트 상세 보기 ===")
+    prompt = select_prompt()
+    if prompt is None:
+        return
+
+    star = "⭐" if prompt["favorite"] else "없음"
+    line = "─" * 28
+
+    print()
+    print(line)
+    print(f"제목: {prompt['title']}")
+    print(f"카테고리: {prompt['category']}")
+    print(f"즐겨찾기: {star}")
+    print(line)
+    print("내용:")
+    print(prompt["content"])
+    print(line)
+
+
 def main():
     """메뉴를 계속 보여주고, 사용자가 고른 번호를 처리한다."""
     while True:
@@ -178,6 +214,8 @@ def main():
             show_by_category()
         elif choice == "4":
             search_prompt()
+        elif choice == "5":
+            show_detail()
         elif choice == "0":
             print("프로그램을 종료합니다.")
             break
