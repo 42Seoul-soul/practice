@@ -76,7 +76,7 @@ def select_prompt():
         print("등록된 프롬프트가 없습니다.")
         return None
 
-    choice = input("번호 입력: ").strip()
+    choice = input("프롬프트 번호 입력: ").strip()
     if choice.isdigit() and 1 <= int(choice) <= len(prompts):
         return prompts[int(choice) - 1]
 
@@ -200,6 +200,29 @@ def show_detail():
     print(line)
 
 
+def toggle_favorite():
+    """번호를 입력받아 즐겨찾기를 추가하거나 해제한다."""
+    print()
+    print("=== 즐겨찾기 관리 ===")
+
+    # 번호를 고르기 쉽도록 목록을 먼저 보여준다
+    for i, prompt in enumerate(prompts, start=1):
+        print_prompt_line(i, prompt)
+    print()
+
+    prompt = select_prompt()
+    if prompt is None:
+        return
+
+    # True면 False로, False면 True로 뒤집는다
+    prompt["favorite"] = not prompt["favorite"]
+
+    if prompt["favorite"]:
+        print(f"'{prompt['title']}' 프롬프트를 즐겨찾기에 추가했습니다!")
+    else:
+        print(f"'{prompt['title']}' 프롬프트를 즐겨찾기에서 해제했습니다.")
+
+
 def main():
     """메뉴를 계속 보여주고, 사용자가 고른 번호를 처리한다."""
     while True:
@@ -216,6 +239,8 @@ def main():
             search_prompt()
         elif choice == "5":
             show_detail()
+        elif choice == "6":
+            toggle_favorite()
         elif choice == "0":
             print("프로그램을 종료합니다.")
             break
