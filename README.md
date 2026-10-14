@@ -11,8 +11,8 @@
 ## 실행 방법
 
 ```bash
-git clone https://github.com/아이디/저장소이름.git
-cd 저장소이름
+git clone https://github.com/42Seoul-soul/practice.git
+cd practice
 python main.py
 ```
 
