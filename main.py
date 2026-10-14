@@ -117,8 +117,10 @@ def show_list():
 
     for i, prompt in enumerate(prompts, start=1):
         print_prompt_line(i, prompt)
+
+    favorite_count = sum(1 for prompt in prompts if prompt["favorite"])
     print()
-    print(f"총 {len(prompts)}개의 프롬프트")
+    print(f"총 {len(prompts)}개의 프롬프트 (즐겨찾기 {favorite_count}개)")
 
 
 def show_by_category():
